@@ -15,27 +15,24 @@ public class Bingo {
         jogadores = input.next().split("-");
         return jogadores;
     }
-
     public static int[][] jogadoresCartela (String[] jogadores){
         int[][] tamanhoCartela = new int[jogadores.length][5];
         int[] cartela = new int[5];
         String[] escolherNumeros = new String[5];
         for(int i = 0; i < jogadores.length; i++){
-            System.out.printf("%s, Cartela manual ou aleatória?\n", jogadores[i]);
-            System.out.println("Digite M ou A");
+            System.out.printf("%s, Cartela manual ou aleatória? Digite M ou A\n", jogadores[i]);
             Scanner input = new Scanner(System.in);
             String escolha = input.next();
-
-            if(escolha.equals("M")){
-                System.out.println("Digite os 5 números da cartela com vírgula");
-                escolherNumeros = input.next().split(",");
+            if(escolha == "M"){
+                System.out.println("Digite 5 números separados com vírgula");
+                escolherNumeros = input.next().split("");
                 for(int j = 0; j < 5; j++){
                     cartela[j] = Integer.parseInt(escolherNumeros[j]);
                     tamanhoCartela[i][j] = cartela[j];
                 }
             }
 
-            else{
+            else if(escolha == "A"){
                 int[] aux = cartelaInicio();
                 for(int j = 0; j < aux.length; j++){
                     tamanhoCartela[i][j] = aux[j];
@@ -44,7 +41,6 @@ public class Bingo {
         }
         return tamanhoCartela;
     }
-
     public static void mostraCartelas (String[] jogadores, int[][] cartelas){
 
         for(int i = 0; i < jogadores.length; i++){
@@ -55,11 +51,9 @@ public class Bingo {
             System.out.println(" ");
         }
     }
-
     public static int[] cartelaInicio(){
         int[] valores = new int[5];
         Random random = new Random();
-
         int i = 0;
         while(i < valores.length){
             valores[i] = random.nextInt(60);
@@ -76,22 +70,20 @@ public class Bingo {
         }
         return valores;
     }
-
     public static void sorteio(String[] jogadores, int[][] cartelas){
         Scanner input = new Scanner(System.in);
         String escolha;
-        int[][] cartelaZerada = zerar(jogadores);
+        int[][] vazio = zerar(jogadores);
         System.out.print("Sorteio manual ou aleatório? digite M ou A: ");
         escolha = input.next();
         System.out.println(" ");
         if(escolha.equals("M")){
-            sorteio(jogadores, cartelas, input, cartelaZerada, escolha);
+            sorteio(jogadores, cartelas, input, vazio, escolha);
         }
-        else{
-            sorteio(jogadores, cartelas, input, cartelaZerada, escolha);
+        else if(escolha.equals("A")){
+            sorteio(jogadores, cartelas, input, vazio, escolha);
         }
     }
-
     public static int[][] zerar(String[] jogadores){
         int[][] aux = new int[jogadores.length][5];
         for(int i = 0; i < jogadores.length; i++){
@@ -101,18 +93,17 @@ public class Bingo {
         }
         return aux;
     }
-
-    public static void sorteio(String[] jogadores, int[][] jogadorSorteio, Scanner input, int[][] cartelaZerada, String escolha){
-        boolean flag = false;
+    public static void sorteio(String[] jogadores, int[][] jogadorSorteio, Scanner input, int[][] vazio, String escolha){
+        boolean y = false;
         String[] escolherNumeros = new String[5];
         int[] cartelaSorteada = new int[5];
-        int[][] acertados = cartelaZerada;
+        int[][] acertados = vazio;
         int rodada = 1;
-        int ganhador = 0;
+        int vence = 0;
         int[][] numAcertos = new int[jogadores.length][1];
-        while(flag == false){
+        while(y == false){
 
-            if(escolha.equals("M")){
+            if(escolha == "M"){
                 System.out.print("Digite os 5 números separados por vírgula:");
                 escolherNumeros = input.next().split(",");
 
@@ -122,7 +113,7 @@ public class Bingo {
                     valoresQuantidade++;
                 }
             }
-            else if(escolha.equals("A")){
+            else if(escolha == "A"){
                 cartelaSorteada = cartelaInicio();
                 int valoresQuantidade = 0;
                 valoresQuantidade += 5;
@@ -139,8 +130,8 @@ public class Bingo {
                 }
 
                 if(numAcertos[i][0] == 5){
-                    flag = true;
-                    ganhador = i;
+                    y = true;
+                    vence = i;
                 }
             }
 
@@ -157,7 +148,6 @@ public class Bingo {
     }
 
     }
-
   public static void main(String[] args) {
 
         String[] jogadores = jogadoresQtd();
